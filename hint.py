@@ -114,11 +114,13 @@ class WordSetMeta:
         for word in self.words:
             if word.exclude_if_letter_at_position(
                     letter, position, exists, is_permanent) and is_permanent:
+                # Optimization to reduce future search space by culling the list at the start.
                 self.words.remove(word)
 
     def remove_words_if_has_letter(self, letter, exists, is_permanent):
         for word in self.words:
             if word.exclude_if_has_letter(letter, exists, is_permanent) and is_permanent:
+                # Optimization to reduce future search space by culling the list at the start.
                 self.words.remove(word)
 
 
@@ -249,6 +251,8 @@ def main():
     print("Eliminating impossible words...")
     eliminate_impossible_words(prior_guesses, words, True)
     print("Finding best guess of " + str(len(words)) + " remaining words...")
+    for word in words:
+        print(word.word)
     best_guess = get_best_gueess(words).word
     print("\nbest guess = " + best_guess)
 
